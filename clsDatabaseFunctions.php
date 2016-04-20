@@ -1,13 +1,15 @@
 <?php
 // Alex Ash, Brett Akey
-	$Connect;
-	echo "Alex Ash and Brett Akey";
- 	function OpenConnectionandDatabase()
+class dbFunctions
+{
+	private $Connect;
+	//echo "Alex Ash and Brett Akey";
+	function __construct()
 	{
 		global $Connect;
 		$Host="localhost";
 		$UserName = "root";
-		$Password = "mysql";
+		$Password = "";
 		$Database = "test";
 	  	$Connect = mysqli_connect($Host, $UserName, $Password, $Database); 
 		if (!$Connect) 
@@ -18,7 +20,7 @@
 	// else echo "good connect";
 		return(true);
 	}
-	function CloseConnection()
+	function __destruct()
 	{
 		global $Connect;
 		mysqli_close($Connect);
@@ -135,4 +137,10 @@
 			return false;
 		}
 	}
+	
+	function UpdateTable()
+	{
+		
+	}
+}
 ?>

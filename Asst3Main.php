@@ -1,8 +1,9 @@
 <?php
 //Alex Ash and Brett Akey
 
-include_once("Asst2Include.php");
-include_once("Asst2DatabaseFunctions.php"); 
+include_once("Asst3Include.php");
+include_once("clsDatabaseFunctions.php"); 
+
 //Setup a form
 function SetUpForm( $Character )
 {
@@ -144,6 +145,7 @@ function DataEntryForm()
 }
 function ResultsForm()
 {
+	$dbObj = new dbFunctions();
 	SetUpForm("H");
 	
 	$BandName = $_POST["bandName"];
@@ -218,10 +220,10 @@ function ResultsForm()
 	
 	$BandName's Net Income is $$netIncome. Next gig is $GigDate
 	";
-	OpenConnectionandDatabase();
+	
 	$Values = array($BandName, $NumCd, $CdPrice, $ManagerFeeDec,  $recordingPercent, $advanceValue, $DistFee, $ManuFac, $GigDate);
 	$DataTypes = array("varchar", "integer", "decimal", "decimal", "decimal", "decimal", "decimal", "decimal", "date");
-	$Insert = InsertIntoTable("Band", $Values, $DataTypes);
+	$Insert = $dbObj->InsertIntoTable("Band", $Values, $DataTypes);
 	if ($Insert) 
 	{
 		echo "Insert was successful. "; 
@@ -233,19 +235,20 @@ function ResultsForm()
 	}
 	
 	echo"</div>";
-	CloseConnection();
+	
 	FinishForm();
 }
 
 function CreateTableForm()
 {
+	$dbObj = new dbFunctions();
     SetUpForm("H");
-	OpenConnectionandDatabase();
+	
 	$FieldNames = array("BandName", "CDsSold", "Price", "ManagerPercent", "RecordingPercent", "AdvanceAmt", "DistributerFee", "ManufacturingFee", "GigDate");
 	$DataTypes = array("varchar", "integer", "decimal", "decimal", "decimal", "decimal", "decimal", "decimal", "date");
 	$Sizes = array(30, 0, 8, 8, 8, 8, 8, 8, 0);
 	$Decimals = array(0, 0, 2, 2, 2, 2, 2, 2, 0);
-	$Create = CreateTable("Band", $FieldNames, $DataTypes, $Sizes, $Decimals);
+	$Create = $dbObj->CreateTable("Band", $FieldNames, $DataTypes, $Sizes, $Decimals);
 	if($Create)
 	{
 		echo"Table has been created successfully";
@@ -253,16 +256,17 @@ function CreateTableForm()
 	else{
 		echo"Table was not created successfully";
 	}
-    CloseConnection();
+    
     FinishForm();
 }
 
 function DisplayData()
 {
+	$dbObj = new dbFunctions();
     SetUpForm("H");
-	OpenConnectionandDatabase();
+	
     
-	$result = RunSelect("Band", "", "", "BandName", "");
+	$result = $dbObj->RunSelect("Band", "", "", "BandName", "");
 	
 		
         echo "<table style='border:1px solid black'>";
@@ -281,7 +285,7 @@ function DisplayData()
         }
         echo "</table>";
 	
-	CloseConnection();
+	
     FinishForm();
 }
 

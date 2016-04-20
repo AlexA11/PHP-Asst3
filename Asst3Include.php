@@ -8,7 +8,7 @@ function WriteHeaders($Heading="Welcome",$TitleBar="MySite")
 <head>
     <meta charset = \"UTF-8\">
     <title>$TitleBar</title>
-    <link rel=\"stylesheet\" type=\"text/css\" href=\"Asst2Style.css\">
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"Asst3Style.css\">
 </head>
 <body>";
 };
