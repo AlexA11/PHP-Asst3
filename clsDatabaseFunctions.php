@@ -32,10 +32,10 @@ class dbFunctions
 		$query = "SELECT * FROM ".$TableName;
 			if($WhereField != "" && $WhereValue != "")
 			{
-				if(strcmp($WhereField, "string")|| strcmp($WhereField, "date"))
+				if(gettype($WhereField) == "string" || gettype($WhereField) == "date")
 				{
 					$WhereValue = "'".$WhereValue."'";
-					$query = $query."WHERE ".$WhereValue;
+					$query = $query." WHERE ".$WhereField." = ".$WhereValue;
 				}
 			}
 			if($OrderField != "")
@@ -44,6 +44,7 @@ class dbFunctions
 			}
 			
 		$result = mysqli_query($Connect, $query);
+	
 		return $result;
    		  
 	}

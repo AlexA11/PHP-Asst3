@@ -27,11 +27,10 @@ function SetUpForm( $Character )
          if(strpbrk($Character, "F"))
 				{
 					echo"<form action=? method=post>";
-					DisplayButton("nextPage", "Find Record" , "FoundRecord");
-					 echo"</form>";
+			        echo"<input type=submit name=\"nextPage\" class=\"submit\" value=\"Find Record\">";
 				}         
-		
-	      echo"<form action=? method=post>";
+		echo"<form action=? method=post>";
+	      
 		if(strpbrk($Character, "S"))
 			{
 				echo"<input type=submit name=\"nextPage\" class=\"submit\" value=\"Save\"> ";
@@ -293,11 +292,12 @@ function ModifyRecord()
 {
 	
     SetUpForm("HF");
-	
+	echo"<form action=? method=post>";
     DisplayLabel("Search By Band Name: ");
-	DisplayTextBox("search", "", "");
-	
+	DisplayTextBox("search", "10", "");
+	echo"</form>";
     FinishForm();
+	
 }
 
 function ShowFoundRecord()
@@ -305,7 +305,6 @@ function ShowFoundRecord()
     SetUpForm("HC");
     $dbObj = new dbFunctions();
 	$searchName = $_POST["search"];
-	var_dump($searchName);
 	$result = $dbObj->RunSelect("Band", "BandName", $searchName, "BandName", "");
 	
 	echo "<table style='border:1px solid black'>";
@@ -347,7 +346,7 @@ elseif (!strcmp($_POST["nextPage"], "EnterData"))
             ModifyRecord();
             elseif(!strcmp($_POST["nextPage"], "DisplayData"))
                 DisplayData();
-                elseif(!strcmp($_POST["nextPage"], "FoundRecord"))
+                elseif(!strcmp($_POST["nextPage"], "Find Record"))
                     ShowFoundRecord();
                      elseif(!strcmp($_POST["nextPage"], "ChangesMade"))
                     WriteFoundRecordData();
