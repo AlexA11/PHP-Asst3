@@ -138,9 +138,44 @@ class dbFunctions
 		}
 	}
 	
-	function UpdateTable()
+	function UpdateTable($TableName, $UpdateFieldName, $UpdateFieldValue, $DataTypes, $WhereFieldName, $WhereFieldValue)
 	{
+		global $Connect;
+		$query = "UPDATE $TableName SET";
 		
+		$numFields = sizeof($UpdateFieldName);
+		
+		for($i=0; $i < $numFields; $i++)
+		{
+			if(strcmp($DataTypes[$i], "varchar") || strcmp($DataTypes[$i], "date"))
+			{
+				$query .= $UpdateFieldName[$i]."= '".$UpdateFieldValue[$i]."'";
+			}
+			else {
+				$query .= $UpdateFieldName[$i]."=".$UpdateFieldValue[$i];
+			}
+			$query .= ", ";
+		}
+		$query = rtrim($query, ', ');
+		if($WhereFieldName != "" && $WhereFieldValue != "")
+			{
+			if(strcmp($WhereFieldName, "string")|| strcmp($WhereFieldName, "date"))
+				{
+					$WhereFieldValue = "'".$WhereValue."'";
+					$query = $query."WHERE ".$WhereFieldName."=".$WhereFieldValue;
+				}
+			}
+		
+		$result = mysqli_query($Connect, $query);
+		
+		if($result)
+		{			
+			return true;
+		}
+		else{
+			
+			return false;
+		}
 	}
 }
 ?>
