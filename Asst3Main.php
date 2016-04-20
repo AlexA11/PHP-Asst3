@@ -291,15 +291,38 @@ function DisplayData()
 
 function ModifyRecord()
 {
+	
     SetUpForm("HF");
-    echo"You can search records here";
+	
+    DisplayLabel("Search By Band Name: ");
+	DisplayTextBox("search", "", "");
+	
     FinishForm();
 }
 
 function ShowFoundRecord()
 {
     SetUpForm("HC");
-    echo"Show Found Record page";
+    $dbObj = new dbFunctions();
+	$searchName = $_POST["search"];
+	var_dump($searchName);
+	$result = $dbObj->RunSelect("Band", "BandName", $searchName, "BandName", "");
+	
+	echo "<table style='border:1px solid black'>";
+        echo "<th>Band</th><th>CDs Sold</th><th>Price</th><th>Manager %</th>
+		<th>Recording %</th><th>Advance Amt</th><th>Distributer</th><th>Manufacturing</th><th>Gig Date</th>";
+        while($row = mysqli_fetch_assoc($result))
+        {
+            echo"<tr>";
+            foreach($row as $col)
+            {
+                echo "<td style='border:1px solid black'>";				
+                echo $col;
+                echo "</td>";
+            }
+            echo "</tr>";
+        }
+        echo "</table>";
     FinishForm();
 }
 
