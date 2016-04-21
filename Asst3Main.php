@@ -306,22 +306,105 @@ function ShowFoundRecord()
     $dbObj = new dbFunctions();
 	$searchName = $_POST["search"];
 	$result = $dbObj->RunSelect("Band", "BandName", $searchName, "BandName", "");
+	$row = mysqli_fetch_assoc($result);
 	
-	echo "<table style='border:1px solid black'>";
-        echo "<th>Band</th><th>CDs Sold</th><th>Price</th><th>Manager %</th>
-		<th>Recording %</th><th>Advance Amt</th><th>Distributer</th><th>Manufacturing</th><th>Gig Date</th>";
-        while($row = mysqli_fetch_assoc($result))
-        {
-            echo"<tr>";
-            foreach($row as $col)
-            {
-                echo "<td style='border:1px solid black'>";				
-                echo $col;
-                echo "</td>";
-            }
-            echo "</tr>";
-        }
-        echo "</table>";
+	echo"<div class=\"leftinput\" >";
+	
+	DisplayLabel("Band Name: ");
+	DisplayTextBox("bandName", "20", "$row[BandName]");
+	echo"<br/>";
+	echo"<br/>";
+	
+	DisplayLabel("Number of CD's Sold: ");
+	DisplayTextBox("numCD", "20", "$row[CDsSold]");
+	echo"<br/>";
+	echo"<br/>";
+	
+	DisplayLabel("CD Selling Price: ");
+	DisplayTextBox("cdPrice", "20", "$row[Price]");
+	echo"<br/>";
+	echo"<br/>";
+	
+	DisplayLabel("Manager Fee: ");
+	if($row['ManagerPercent'] == 45){
+	echo"<br /><input required type=\"radio\" value=\"45\" name=\"managerFee\" checked>45% <br />";
+	}
+	else{
+		echo"<br /><input required type=\"radio\" value=\"45\" name=\"managerFee\">45% <br />";
+	}
+	if($row['ManagerPercent'] == 55){
+	echo"<input  type=\"radio\" value=\"55\" name=\"managerFee\" checked>55% <br />";
+	}
+	else{
+		echo"<input  type=\"radio\" value=\"55\" name=\"managerFee\" >55% <br />";
+	}
+	
+	echo"<br/>";
+	
+	DisplayLabel("Recording Studio");
+	if($row['RecordingPercent'] == 5){
+	echo"
+	<select required name=\"recordingStudio\">
+		<option value=\"NA\">N\A</option>
+		<option value=\"RRRS\" selected>Rock Rules Recording Studio</option>
+		<option value=\"STMS\">Sing To Me Studios</option>
+		<option value=\"MSNS\">Make Some Noise Studios</option>
+	</select>
+	<br />";
+	echo"<br/>";
+	}
+	if($row['RecordingPercent'] == 10){
+	echo"
+	<select required name=\"recordingStudio\">
+		<option value=\"NA\">N\A</option>
+		<option value=\"RRRS\">Rock Rules Recording Studio</option>
+		<option value=\"STMS\"selected>Sing To Me Studios</option>
+		<option value=\"MSNS\">Make Some Noise Studios</option>
+	</select>
+	<br />";
+	echo"<br/>";
+	}
+	if($row['RecordingPercent'] == 15){
+	echo"
+	<select required name=\"recordingStudio\">
+		<option value=\"NA\">N\A</option>
+		<option value=\"RRRS\">Rock Rules Recording Studio</option>
+		<option value=\"STMS\"selected>Sing To Me Studios</option>
+		<option value=\"MSNS\"selected>Make Some Noise Studios</option>
+	</select>
+	<br />";
+	echo"<br/>";
+	}
+	
+	
+	
+	DisplayLabel("Advance");
+	if($row['AdvanceAmt'] == 1000)
+	{
+		echo"<input type=\"checkbox\" name=\"advance\" value=\"advance\" checked/>";
+	}
+	else{
+		echo"<input type=\"checkbox\" name=\"advance\" value=\"advance\" />";
+	}
+	echo"<br/>";
+	echo"<br/>";
+	
+	echo"</div>";
+	
+	DisplayLabel("Distributer Fees: ");
+	DisplayTextBox("distFee", "10", "$row[DistributerFee]");
+	echo"<br/>";
+	echo"<br/>";
+	
+	DisplayLabel("Manufacturing Costs: ");
+	DisplayTextBox("manuFac", "10", "$row[ManufacturingFee]");
+	echo"<br/>";
+	echo"<br/>";
+	
+	DisplayLabel("Gig Date (YYYY/MM/DD): ");
+	DisplayTextBox("gigDate", "10", "$row[GigDate]");
+	echo"<br/>";
+	echo"<br/>";
     FinishForm();
 }
 
