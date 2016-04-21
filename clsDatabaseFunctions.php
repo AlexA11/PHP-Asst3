@@ -142,13 +142,13 @@ class dbFunctions
 	function UpdateTable($TableName, $UpdateFieldName, $UpdateFieldValue, $DataTypes, $WhereFieldName, $WhereFieldValue)
 	{
 		global $Connect;
-		$query = "UPDATE $TableName SET";
+		$query = "UPDATE $TableName SET ";
 		
 		$numFields = sizeof($UpdateFieldName);
 		
 		for($i=0; $i < $numFields; $i++)
 		{
-			if(strcmp($DataTypes[$i], "varchar") || strcmp($DataTypes[$i], "date"))
+			if($DataTypes[$i] == "varchar" || $DataTypes[$i] == "date")
 			{
 				$query .= $UpdateFieldName[$i]."= '".$UpdateFieldValue[$i]."'";
 			}
@@ -160,10 +160,10 @@ class dbFunctions
 		$query = rtrim($query, ', ');
 		if($WhereFieldName != "" && $WhereFieldValue != "")
 			{
-			if(strcmp($WhereFieldName, "string")|| strcmp($WhereFieldName, "date"))
+			if(gettype($WhereFieldName) == "string" || gettype($WhereFieldName) == "date")
 				{
-					$WhereFieldValue = "'".$WhereValue."'";
-					$query = $query."WHERE ".$WhereFieldName."=".$WhereFieldValue;
+					$WhereFieldValue = "'".$WhereFieldValue."'";
+					$query = $query." WHERE ".$WhereFieldName."=".$WhereFieldValue;
 				}
 			}
 		

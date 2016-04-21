@@ -37,9 +37,9 @@ function SetUpForm( $Character )
 			}
         if(strpbrk($Character, "C"))
 			{
-				echo"<form action=? method=post>";
-					DisplayButton("nextPage", "Save Changes" , "ChangesMade");
-					 echo"</form>";
+			//	echo"<form action=? method=post>";
+				echo"<input type=submit name=\"nextPage\" class=\"submit\" value=\"Save Changes\"> ";
+			//		 echo"</form>";
 			}
 			
 		elseif(	!strpbrk($Character, "S") && !strpbrk($Character, "H"))
@@ -309,9 +309,8 @@ function ShowFoundRecord()
 	$row = mysqli_fetch_assoc($result);
 	
 	echo"<div class=\"leftinput\" >";
-	
 	DisplayLabel("Band Name: ");
-	DisplayTextBox("bandName", "20", "$row[BandName]");
+	echo "<input required class=\"DataPair\" type=\"text\" name=\"bandName\" value=\"$row[BandName]\" readonly> ";
 	echo"<br/>";
 	echo"<br/>";
 	
@@ -391,6 +390,8 @@ function ShowFoundRecord()
 	
 	echo"</div>";
 	
+	
+	
 	DisplayLabel("Distributer Fees: ");
 	DisplayTextBox("distFee", "10", "$row[DistributerFee]");
 	echo"<br/>";
@@ -410,8 +411,51 @@ function ShowFoundRecord()
 
 function WriteFoundRecordData()
 {
+	
     SetUpForm("H");
-    echo"Record has been saved to the database";
+	$BandName = $_POST["bandName"];
+	$NumCd = $_POST["numCD"];
+	$CdPrice = $_POST["cdPrice"];
+	$ManagerFee = $_POST["managerFee"];
+	$RecordingStudio = $_POST["recordingStudio"];
+	$Advance = $_POST["advance"];
+	$DistFee = $_POST["distFee"];
+	$ManuFac = $_POST["manuFac"];
+	$GigDate = $_POST["gigDate"];
+	
+	if($RecordingStudio == "RRRS")
+	{
+
+		$RecordingStudio = 5;
+	}
+	if($RecordingStudio == "STMS")
+	{
+
+		$RecordingStudio = 10;
+	}
+	if($RecordingStudio == "MSNS")
+	{
+		
+		$RecordingStudio = 15;
+	}
+	if($Advance == "advance")
+	{
+		$Advance = 1000;
+	}
+	
+	$dbObj = new dbFunctions();
+	$fields = array("BandName", "CDsSold", "Price", "ManagerPercent", "RecordingPercent", "AdvanceAmt", "DistributerFee", "ManufacturingFee", "GigDate");
+	$values = array($BandName, $NumCd, $CdPrice, $ManagerFee, $RecordingStudio, $Advance, $DistFee, $ManuFac, $GigDate);
+	$DataTypes = array("varchar", "integer", "decimal", "decimal", "decimal", "decimal", "decimal", "decimal", "date");
+	$result = $dbObj->UpdateTable("band", $fields, $values, $DataTypes, "BandName", $BandName);
+    
+	if($result)
+	{
+		echo"Data has been successfully updated";
+	}
+	else{
+		echo"Data was not updated";
+	}
     FinishForm();
 }
 //main
@@ -431,7 +475,7 @@ elseif (!strcmp($_POST["nextPage"], "EnterData"))
                 DisplayData();
                 elseif(!strcmp($_POST["nextPage"], "Find Record"))
                     ShowFoundRecord();
-                     elseif(!strcmp($_POST["nextPage"], "ChangesMade"))
+                     elseif(!strcmp($_POST["nextPage"], "Save Changes"))
                     WriteFoundRecordData();
   
 ?>
